@@ -19,7 +19,7 @@ deployment:
     - /bin/mkdir -p $DEPLOYPATH/includes/services
     - /bin/mkdir -p $DEPLOYPATH/includes/validators
     - /bin/mkdir -p $DEPLOYPATH/includes/templates/email
-    - /bin/cp -f includes/*.php $DEPLOYPATH/includes/
+    - find includes -maxdepth 1 -name "*.php" ! -name "config.php" ! -name "config.local.php" -exec /bin/cp -f {} $DEPLOYPATH/includes/ \;
     - /bin/cp -f includes/repositories/*.php $DEPLOYPATH/includes/repositories/
     - /bin/cp -f includes/services/*.php $DEPLOYPATH/includes/services/
     - /bin/cp -f includes/validators/*.php $DEPLOYPATH/includes/validators/
