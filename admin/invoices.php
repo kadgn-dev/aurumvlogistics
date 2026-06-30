@@ -62,6 +62,12 @@ $successMessage = '';
 $errorMessage = '';
 $formErrors = [];
 
+// Read flash message from redirect
+if (isset($_SESSION['flash_success'])) {
+  $successMessage = $_SESSION['flash_success'];
+  unset($_SESSION['flash_success']);
+}
+
 // Get all clients for the dropdown
 $clientsStmt = $pdo->prepare("SELECT id, name, email FROM users WHERE role = 'client' ORDER BY name ASC");
 $clientsStmt->execute();
@@ -102,8 +108,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $result = $invoiceService->createInvoice($data);
     if ($result->success) {
-      $successMessage = 'Invoice ' . ($result->data['invoice_number'] ?? '') . ' created successfully.';
+      $_SESSION['flash_success'] = 'Invoice ' . ($result->data['invoice_number'] ?? '') . ' created successfully.';
       $auditService->log('invoice_created', $adminId, 'invoice', $result->data['invoice_id'] ?? null);
+      header('Location: /admin/invoices.php');
+      exit;
     } else {
       if ($result->errors) {
         $formErrors = $result->errors;
@@ -114,8 +122,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $invoiceId = (int) ($_POST['invoice_id'] ?? 0);
     $result = $invoiceService->markPaid($invoiceId);
     if ($result->success) {
-      $successMessage = 'Invoice marked as paid.';
+      $_SESSION['flash_success'] = 'Invoice marked as paid.';
       $auditService->log('invoice_paid', $adminId, 'invoice', $invoiceId);
+      header('Location: /admin/invoices.php');
+      exit;
     } else {
       $errorMessage = $result->errorMessage ?? 'Failed to mark invoice as paid.';
     }
@@ -188,7 +198,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
       }
 
-      $successMessage = sprintf('Auto-generated %d invoice(s). Skipped %d client(s) (no portfolio value or error).', $generated, $skipped);
+      $_SESSION['flash_success'] = sprintf('Auto-generated %d invoice(s). Skipped %d client(s) (no portfolio value or error).', $generated, $skipped);
+      header('Location: /admin/invoices.php');
+      exit;
     }
   }
 }
