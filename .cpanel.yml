@@ -30,7 +30,4 @@ deployment:
     - /bin/cp -f database/schema.sql $DEPLOYPATH/database/
     # Fix include paths for cPanel structure (admin/client are inside public_html)
     # admin/ and client/ files reference '../includes/' but on cPanel it's '../../includes/'
-    - find $DEPLOYPATH/public_html/admin -name "*.php" -exec sed -i "s|__DIR__ . '/../includes/|__DIR__ . '/../../includes/|g" {} \;
-    - find $DEPLOYPATH/public_html/client -name "*.php" -exec sed -i "s|__DIR__ . '/../includes/|__DIR__ . '/../../includes/|g" {} \;
-    - find $DEPLOYPATH/public_html/admin -name "*.php" -exec sed -i "s|__DIR__ . '/../vendor/|__DIR__ . '/../../vendor/|g" {} \;
-    - find $DEPLOYPATH/public_html/client -name "*.php" -exec sed -i "s|__DIR__ . '/../vendor/|__DIR__ . '/../../vendor/|g" {} \;
+    - cd $DEPLOYPATH && php -r "foreach(glob('public_html/admin/*.php') as \$f){file_put_contents(\$f, str_replace(\"__DIR__ . '/../includes/\", \"__DIR__ . '/../../includes/\", str_replace(\"__DIR__ . '/../vendor/\", \"__DIR__ . '/../../vendor/\", file_get_contents(\$f))));} foreach(glob('public_html/client/*.php') as \$f){file_put_contents(\$f, str_replace(\"__DIR__ . '/../includes/\", \"__DIR__ . '/../../includes/\", str_replace(\"__DIR__ . '/../vendor/\", \"__DIR__ . '/../../vendor/\", file_get_contents(\$f))));} foreach(glob('public_html/client/api/*.php') as \$f){file_put_contents(\$f, str_replace(\"__DIR__ . '/../includes/\", \"__DIR__ . '/../../includes/\", str_replace(\"__DIR__ . '/../vendor/\", \"__DIR__ . '/../../vendor/\", file_get_contents(\$f))));}"
