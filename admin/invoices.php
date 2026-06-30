@@ -298,14 +298,42 @@ require_once __DIR__ . '/../includes/templates/nav_admin.php';
       </form>
       <script>
         var feeAmountMap = <?= json_encode($feeAmountMap) ?>;
+        var selectedFeeRate = 0;
+        var selectedFeeType = 'fixed';
+
         function selectPreset(value) {
           if (value) {
             document.getElementById('description').value = value;
-            if (feeAmountMap[value] && feeAmountMap[value].type === 'fixed') {
-              document.getElementById('amount').value = feeAmountMap[value].amount;
+            if (feeAmountMap[value]) {
+              selectedFeeRate = parseFloat(feeAmountMap[value].amount) || 0;
+              selectedFeeType = feeAmountMap[value].type || 'fixed';
+              calculateTotal();
             }
           }
         }
+
+        function calculateTotal() {
+          var startDate = document.getElementById('billing_period_start').value;
+          var endDate = document.getElementById('billing_period_end').value;
+          var amountField = document.getElementById('amount');
+
+          if (selectedFeeRate > 0 && startDate && endDate) {
+            var start = new Date(startDate);
+            var end = new Date(endDate);
+            var months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth()) + 1;
+
+            if (months > 0) {
+              var total = (selectedFeeRate * months).toFixed(2);
+              amountField.value = total;
+            }
+          } else if (selectedFeeRate > 0 && selectedFeeType === 'fixed' && !startDate && !endDate) {
+            amountField.value = selectedFeeRate.toFixed(2);
+          }
+        }
+
+        // Auto-calculate when dates change
+        document.getElementById('billing_period_start').addEventListener('change', calculateTotal);
+        document.getElementById('billing_period_end').addEventListener('change', calculateTotal);
       </script>
     </div>
   </div>
