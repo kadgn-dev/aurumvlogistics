@@ -1,0 +1,32 @@
+{
+    "name": "goldbodvault/gols-platform",
+    "description": "Aurum Vault Logistics Platform (AVL)",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.0",
+        "phpmailer/phpmailer": "^6.0",
+        "tecnickcom/tcpdf": "^6.6"
+    },
+    "require-dev": {
+        "giorgiosironi/eris": "^1.0",
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "GOLS\\": "includes/"
+        },
+        "files": [
+            "includes/helpers.php",
+            "includes/csrf.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GOLS\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

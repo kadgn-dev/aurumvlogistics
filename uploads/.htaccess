@@ -1,0 +1,58 @@
+# =============================================================================
+# Uploads Directory Security Configuration
+# Allow serving static files but prevent PHP execution
+# =============================================================================
+
+# Disable PHP execution in this directory
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+# Block PHP files from being accessed
+<FilesMatch "\.php([0-9])?$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block phtml files
+<FilesMatch "\.phtml$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Only allow specific file types to be served
+<FilesMatch "\.(pdf|jpg|jpeg|png|gif)$">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+</FilesMatch>
+
+# Prevent directory listing
+Options -Indexes
+
+# Remove handler for PHP files (additional protection)
+<IfModule mod_mime.c>
+    RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .phps
+    RemoveType .php .phtml .php3 .php4 .php5 .php7 .phps
+</IfModule>
+
+# If using FastCGI/FPM, also block via FilesMatch
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|phps)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

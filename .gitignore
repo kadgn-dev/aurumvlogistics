@@ -1,0 +1,27 @@
+# Dependencies
+/vendor/
+
+# Local development
+/database/local.sqlite
+/includes/config.local.php
+
+# Deployment output
+/deploy/
+
+# IDE
+/.vscode/
+/.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Uploads
+/uploads/kyc/*
+!/uploads/kyc/.gitkeep
+
+# PHP cache
+/.phpunit.cache/
+
+# Environment
+.env

@@ -1,0 +1,36 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/auruwlzj/
+    # Copy public-facing files
+    - /bin/cp -R public_html/* $DEPLOYPATH/public_html/
+    - /bin/cp -f public_html/.htaccess $DEPLOYPATH/public_html/.htaccess 2>/dev/null; true
+    - /bin/cp -f public_html/.user.ini $DEPLOYPATH/public_html/.user.ini 2>/dev/null; true
+    # Copy admin pages
+    - /bin/mkdir -p $DEPLOYPATH/public_html/admin
+    - /bin/cp -f admin/*.php $DEPLOYPATH/public_html/admin/
+    # Copy client pages
+    - /bin/mkdir -p $DEPLOYPATH/public_html/client
+    - /bin/cp -f client/*.php $DEPLOYPATH/public_html/client/
+    - /bin/mkdir -p $DEPLOYPATH/public_html/client/api
+    - /bin/cp -f client/api/*.php $DEPLOYPATH/public_html/client/api/ 2>/dev/null; true
+    # Copy includes (above public_html)
+    - /bin/mkdir -p $DEPLOYPATH/includes/repositories
+    - /bin/mkdir -p $DEPLOYPATH/includes/services
+    - /bin/mkdir -p $DEPLOYPATH/includes/validators
+    - /bin/mkdir -p $DEPLOYPATH/includes/templates/email
+    - /bin/cp -f includes/*.php $DEPLOYPATH/includes/
+    - /bin/cp -f includes/repositories/*.php $DEPLOYPATH/includes/repositories/
+    - /bin/cp -f includes/services/*.php $DEPLOYPATH/includes/services/
+    - /bin/cp -f includes/validators/*.php $DEPLOYPATH/includes/validators/
+    - /bin/cp -f includes/templates/*.php $DEPLOYPATH/includes/templates/
+    - /bin/cp -Rf includes/templates/email/* $DEPLOYPATH/includes/templates/email/ 2>/dev/null; true
+    # Copy database schema (for reference only)
+    - /bin/mkdir -p $DEPLOYPATH/database
+    - /bin/cp -f database/schema.sql $DEPLOYPATH/database/
+    # Fix include paths for cPanel structure (admin/client are inside public_html)
+    # admin/ and client/ files reference '../includes/' but on cPanel it's '../../includes/'
+    - find $DEPLOYPATH/public_html/admin -name "*.php" -exec sed -i "s|__DIR__ . '/../includes/|__DIR__ . '/../../includes/|g" {} \;
+    - find $DEPLOYPATH/public_html/client -name "*.php" -exec sed -i "s|__DIR__ . '/../includes/|__DIR__ . '/../../includes/|g" {} \;
+    - find $DEPLOYPATH/public_html/admin -name "*.php" -exec sed -i "s|__DIR__ . '/../vendor/|__DIR__ . '/../../vendor/|g" {} \;
+    - find $DEPLOYPATH/public_html/client -name "*.php" -exec sed -i "s|__DIR__ . '/../includes/|__DIR__ . '/../../includes/|g" {} \;

@@ -1,0 +1,1038 @@
+/* ==========================================================================
+   Aurum Vault Logistics Platform - Minimalist Black & White with Gold Accents
+   Clean, institutional style inspired by premium bullion platforms
+   ========================================================================== */
+
+:root {
+  /* Backgrounds - clean whites and light grays */
+  --gv-bg-primary: #ffffff;
+  --gv-bg-surface: #f8f8f8;
+  --gv-bg-elevated: #ffffff;
+  --gv-bg-section: #f4f4f4;
+
+  /* Gold accent - warm, muted gold for icons and accents only */
+  --gv-gold: #a08c4a;
+  --gv-gold-light: #c4ad6c;
+  --gv-gold-border: rgba(160, 140, 74, 0.4);
+  --gv-gold-bg: rgba(160, 140, 74, 0.06);
+
+  /* Text - black and grays */
+  --gv-text-primary: #1a1a1a;
+  --gv-text-secondary: #555555;
+  --gv-text-muted: #999999;
+  --gv-text-on-gold: #ffffff;
+
+  /* Borders */
+  --gv-border: #e8e8e8;
+  --gv-border-strong: var(--gv-gold-border);
+
+  /* Status */
+  --gv-success: #2e7d32;
+  --gv-error: #c62828;
+  --gv-warning: #f57f17;
+  --gv-info: #1565c0;
+
+  /* Radius */
+  --gv-radius: 4px;
+  --gv-radius-lg: 6px;
+
+  /* Font */
+  --gv-font: 'Inter', -apple-system, system-ui, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+body {
+  font-family: var(--gv-font);
+  background-color: var(--gv-bg-primary);
+  color: var(--gv-text-primary);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+/* --------------------------------------------------------------------------
+   Typography
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--gv-text-primary);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1.2rem; }
+
+p { color: var(--gv-text-secondary); }
+
+a { color: var(--gv-gold); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--gv-gold-light); }
+
+/* Section headings - uppercase like "GET STARTED" */
+.section-title {
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  color: var(--gv-text-primary);
+  margin-bottom: 2rem;
+}
+
+/* --------------------------------------------------------------------------
+   Navbar - Clean white/black
+   -------------------------------------------------------------------------- */
+.navbar {
+  background-color: var(--gv-bg-primary) !important;
+  border-bottom: 1px solid var(--gv-border);
+  padding: 0.8rem 0;
+}
+
+.navbar-brand {
+  color: var(--gv-text-primary) !important;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Nav pill container - glassmorphism rounded bar holding menu links, visible only on scroll */
+.nav-pill-container {
+  background-color: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50px;
+  padding: 0.35rem 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.sticky-nav.scrolled .nav-pill-container {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.nav-pill-container .navbar-nav {
+  gap: 0;
+}
+
+.nav-pill-container .nav-link {
+  color: #ffffff !important;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.5rem 0.9rem !important;
+  border-radius: 50px;
+  transition: color 0.2s, background-color 0.2s;
+  letter-spacing: 0.02em;
+  opacity: 1;
+}
+
+.nav-pill-container .nav-link:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.nav-pill-container .nav-link.active {
+  color: #ffffff !important;
+  background-color: transparent;
+  font-weight: 600;
+}
+
+.sticky-nav.scrolled .nav-pill-container .nav-link {
+  color: #ffffff !important;
+}
+
+/* Request Quote CTA button inside pill */
+.nav-pill-container .nav-cta {
+  background-color: var(--gv-gold) !important;
+  color: #1a1a1a !important;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 0.45rem 1.2rem !important;
+}
+
+.nav-pill-container .nav-cta:hover {
+  background-color: var(--gv-gold-light) !important;
+  color: #1a1a1a !important;
+}
+
+/* Before scroll - show links in normal style (no pill) */
+.sticky-nav:not(.scrolled) .nav-pill-container {
+  background: transparent;
+  border-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.sticky-nav:not(.scrolled) .nav-pill-container .nav-link {
+  color: var(--gv-text-secondary) !important;
+}
+
+.sticky-nav:not(.scrolled) .nav-pill-container .nav-link:hover,
+.sticky-nav:not(.scrolled) .nav-pill-container .nav-link.active {
+  color: var(--gv-gold) !important;
+  background-color: transparent;
+}
+
+/* CTA override in non-scrolled state - must come after .nav-link rules */
+.sticky-nav:not(.scrolled) .nav-pill-container .nav-link.nav-cta {
+  background-color: var(--gv-gold) !important;
+  color: #ffffff !important;
+}
+
+.sticky-nav:not(.scrolled) .nav-pill-container .nav-link.nav-cta:hover {
+  background-color: var(--gv-gold-light) !important;
+  color: #ffffff !important;
+}
+
+.navbar .nav-link {
+  color: var(--gv-text-secondary) !important;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.5rem 0.9rem !important;
+  transition: color 0.2s;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: var(--gv-gold) !important;
+}
+
+.navbar-toggler {
+  border-color: var(--gv-border);
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%231a1a1a' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Override dark navbar classes from templates */
+.navbar-dark, .bg-dark.navbar {
+  background-color: var(--gv-bg-primary) !important;
+}
+
+.navbar-dark .navbar-brand,
+.navbar-dark .nav-link {
+  color: var(--gv-text-secondary) !important;
+}
+
+.navbar-dark .navbar-brand { color: var(--gv-text-primary) !important; }
+.navbar-dark .nav-link:hover { color: var(--gv-gold) !important; }
+
+/* --------------------------------------------------------------------------
+   Cards - Thin gold border, white bg (like the image)
+   -------------------------------------------------------------------------- */
+.card {
+  background-color: var(--gv-bg-elevated);
+  border: 1px solid var(--gv-gold-border);
+  border-radius: var(--gv-radius-lg);
+  box-shadow: none;
+}
+
+.card-header {
+  background-color: var(--gv-bg-surface);
+  border-bottom: 1px solid var(--gv-border);
+  color: var(--gv-text-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.card-body { color: var(--gv-text-secondary); }
+
+/* Override dark card classes from templates */
+.card.bg-dark, .bg-dark.card {
+  background-color: var(--gv-bg-elevated) !important;
+  color: var(--gv-text-primary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.btn-gold, .btn-primary {
+  background-color: var(--gv-gold);
+  border-color: var(--gv-gold);
+  color: var(--gv-text-on-gold);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  padding: 0.6rem 1.6rem;
+  border-radius: var(--gv-radius);
+  transition: all 0.2s;
+}
+
+.btn-gold:hover, .btn-primary:hover {
+  background-color: var(--gv-gold-light);
+  border-color: var(--gv-gold-light);
+  color: var(--gv-text-on-gold);
+}
+
+.btn-outline-gold, .btn-outline-light {
+  border: 1px solid var(--gv-gold-border);
+  color: var(--gv-gold);
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.6rem 1.6rem;
+  border-radius: var(--gv-radius);
+}
+
+.btn-outline-gold:hover, .btn-outline-light:hover {
+  background-color: var(--gv-gold-bg);
+  border-color: var(--gv-gold);
+  color: var(--gv-gold);
+}
+
+.btn-success { background-color: var(--gv-success); border-color: var(--gv-success); color: #fff; }
+.btn-danger { background-color: var(--gv-error); border-color: var(--gv-error); color: #fff; }
+.btn-secondary { background-color: #e0e0e0; border-color: #e0e0e0; color: var(--gv-text-primary); }
+.btn-secondary:hover { background-color: #d0d0d0; border-color: #d0d0d0; color: var(--gv-text-primary); }
+
+/* --------------------------------------------------------------------------
+   Forms - Clean, light inputs
+   -------------------------------------------------------------------------- */
+.form-control, .form-select {
+  background-color: var(--gv-bg-primary);
+  border: 1px solid var(--gv-border);
+  color: var(--gv-text-primary);
+  border-radius: var(--gv-radius);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.9rem;
+}
+
+.form-control:focus, .form-select:focus {
+  background-color: var(--gv-bg-primary);
+  border-color: var(--gv-gold);
+  color: var(--gv-text-primary);
+  box-shadow: 0 0 0 2px var(--gv-gold-bg);
+}
+
+.form-control::placeholder { color: var(--gv-text-muted); }
+.form-label { color: var(--gv-text-primary); font-size: 0.85rem; font-weight: 600; }
+.form-text { color: var(--gv-text-muted); font-size: 0.8rem; }
+
+.form-check-input:checked { background-color: var(--gv-gold); border-color: var(--gv-gold); }
+.invalid-feedback { color: var(--gv-error); font-size: 0.8rem; }
+
+/* Override dark form classes from templates */
+.form-control.bg-dark, .bg-dark.form-control,
+.form-select.bg-dark, .bg-dark.form-select {
+  background-color: var(--gv-bg-primary) !important;
+  color: var(--gv-text-primary) !important;
+  border-color: var(--gv-border) !important;
+}
+
+.form-control.text-light, .text-light.form-control { color: var(--gv-text-primary) !important; }
+
+/* --------------------------------------------------------------------------
+   Tables - Clean, minimal
+   -------------------------------------------------------------------------- */
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--gv-text-primary);
+  --bs-table-border-color: var(--gv-border);
+  color: var(--gv-text-primary);
+}
+
+.table thead th {
+  color: var(--gv-text-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--gv-border);
+  padding: 0.7rem;
+}
+
+.table tbody td {
+  padding: 0.7rem;
+  border-color: var(--gv-border);
+  color: var(--gv-text-secondary);
+  font-size: 0.9rem;
+}
+
+.table-hover tbody tr:hover { background-color: var(--gv-gold-bg); }
+
+/* Override dark table classes */
+.table-dark, .table.table-dark { 
+  --bs-table-bg: transparent !important;
+  --bs-table-color: var(--gv-text-primary) !important;
+  color: var(--gv-text-primary) !important;
+}
+
+.table-dark-gold thead th {
+  color: var(--gv-text-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--gv-gold-border);
+}
+
+/* --------------------------------------------------------------------------
+   Badges
+   -------------------------------------------------------------------------- */
+.badge {
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 0.3em 0.65em;
+  border-radius: 3px;
+}
+
+.badge.bg-warning { background-color: #fff3cd !important; color: #856404 !important; }
+.badge.bg-success { background-color: #d4edda !important; color: #155724 !important; }
+.badge.bg-danger { background-color: #f8d7da !important; color: #721c24 !important; }
+.badge.bg-info { background-color: #d1ecf1 !important; color: #0c5460 !important; }
+.badge.bg-secondary { background-color: #e9ecef !important; color: #495057 !important; }
+.badge.bg-primary { background-color: var(--gv-gold-bg) !important; color: var(--gv-gold) !important; }
+
+/* Named status badges */
+.badge-status-approved, .badge-status-active, .badge-status-paid, .badge-status-delivered {
+  background-color: #d4edda !important; color: #155724 !important;
+}
+.badge-status-pending {
+  background-color: #fff3cd !important; color: #856404 !important;
+}
+.badge-status-rejected, .badge-status-suspended, .badge-status-cancelled {
+  background-color: #f8d7da !important; color: #721c24 !important;
+}
+.badge-status-in-transit, .badge-status-ready {
+  background-color: #d1ecf1 !important; color: #0c5460 !important;
+}
+.badge-status-unpaid {
+  background-color: #e9ecef !important; color: #495057 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Alerts
+   -------------------------------------------------------------------------- */
+.alert { border-radius: var(--gv-radius); font-size: 0.9rem; }
+.alert-success { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+.alert-danger { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+.alert-warning { background-color: #fff3cd; border-color: #ffeeba; color: #856404; }
+.alert-info { background-color: #d1ecf1; border-color: #bee5eb; color: #0c5460; }
+
+/* --------------------------------------------------------------------------
+   Pagination
+   -------------------------------------------------------------------------- */
+.page-link {
+  background-color: var(--gv-bg-primary);
+  border-color: var(--gv-border);
+  color: var(--gv-text-secondary);
+  font-size: 0.85rem;
+}
+
+.page-link:hover { background-color: var(--gv-bg-surface); color: var(--gv-gold); border-color: var(--gv-gold-border); }
+.page-item.active .page-link { background-color: var(--gv-gold); border-color: var(--gv-gold); color: #fff; }
+.page-item.disabled .page-link { background-color: var(--gv-bg-surface); color: var(--gv-text-muted); }
+
+/* Override dark pagination from templates */
+.page-link.bg-dark { background-color: var(--gv-bg-primary) !important; color: var(--gv-text-secondary) !important; }
+
+/* --------------------------------------------------------------------------
+   Accordion (FAQ)
+   -------------------------------------------------------------------------- */
+.accordion-item { background-color: var(--gv-bg-primary); border-color: var(--gv-border); }
+.accordion-button { background-color: var(--gv-bg-primary); color: var(--gv-text-primary); font-weight: 500; }
+.accordion-button:not(.collapsed) { background-color: var(--gv-bg-surface); color: var(--gv-gold); box-shadow: none; }
+.accordion-body { color: var(--gv-text-secondary); }
+
+/* Override dark accordion from templates */
+.accordion-button.bg-dark { background-color: var(--gv-bg-primary) !important; color: var(--gv-text-primary) !important; }
+.accordion-item.bg-dark { background-color: var(--gv-bg-primary) !important; }
+
+/* --------------------------------------------------------------------------
+   Footer - Premium light style
+   -------------------------------------------------------------------------- */
+.site-footer {
+  background-color: var(--gv-bg-surface) !important;
+  border-top: 2px solid var(--gv-gold-border);
+  color: var(--gv-text-secondary);
+  position: relative;
+}
+
+.site-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gv-gold), transparent);
+}
+
+.footer-heading {
+  color: var(--gv-text-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.footer-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 24px;
+  height: 2px;
+  background-color: var(--gv-gold);
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+}
+
+.footer-links a {
+  color: var(--gv-text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s, padding-left 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--gv-gold);
+  padding-left: 4px;
+}
+
+.footer-links svg {
+  color: var(--gv-gold);
+  flex-shrink: 0;
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--gv-border);
+}
+
+.footer-bottom a:hover {
+  color: var(--gv-gold) !important;
+}
+
+footer, .footer {
+  background-color: var(--gv-bg-surface) !important;
+  border-top: 1px solid var(--gv-border);
+  color: var(--gv-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Notification badge
+   -------------------------------------------------------------------------- */
+.notification-badge {
+  background-color: var(--gv-gold);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   Override all inline dark styles from templates
+   -------------------------------------------------------------------------- */
+.bg-dark, [class*="bg-dark"] {
+  background-color: var(--gv-bg-primary) !important;
+}
+
+.text-light, [class*="text-light"] {
+  color: var(--gv-text-primary) !important;
+}
+
+.text-secondary { color: var(--gv-text-secondary) !important; }
+.text-muted { color: var(--gv-text-muted) !important; }
+.border-secondary { border-color: var(--gv-border) !important; }
+
+/* Override inline gold color styles */
+[style*="color: #c9a227"] { color: var(--gv-gold) !important; }
+[style*="background-color: #c9a227"] { background-color: var(--gv-gold) !important; }
+[style*="color: #1a1a1a"] { color: var(--gv-text-on-gold) !important; }
+[style*="background-color: #0d1117"] { background-color: var(--gv-bg-surface) !important; }
+[style*="background: linear-gradient"] { background: var(--gv-bg-surface) !important; }
+
+/* Dropdown */
+.dropdown-menu { background-color: var(--gv-bg-elevated); border-color: var(--gv-border); }
+.dropdown-item { color: var(--gv-text-secondary); }
+.dropdown-item:hover { background-color: var(--gv-gold-bg); color: var(--gv-gold); }
+
+/* Modal */
+.modal-content { background-color: var(--gv-bg-elevated); border-color: var(--gv-border); }
+
+/* List group */
+.list-group-item { background-color: var(--gv-bg-primary); border-color: var(--gv-border); color: var(--gv-text-secondary); }
+
+/* --------------------------------------------------------------------------
+   Responsive - 44px touch targets
+   -------------------------------------------------------------------------- */
+@media (max-width: 767.98px) {
+  .btn, .nav-link, .form-control, .form-select, .page-link, .dropdown-item { min-height: 44px; }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.3rem; }
+
+  /* Pill container stacks on mobile */
+  .nav-pill-container {
+    border-radius: var(--gv-radius-lg);
+    padding: 0.5rem;
+    width: 100%;
+    margin-top: 0.75rem;
+  }
+
+  .nav-pill-container .navbar-nav {
+    width: 100%;
+  }
+
+  .nav-pill-container .nav-link {
+    border-radius: var(--gv-radius);
+    padding: 0.6rem 1rem !important;
+  }
+}
+
+/* Prevent overflow */
+html { overflow-x: hidden; }
+body { max-width: 100vw; }
+img, video, iframe { max-width: 100%; height: auto; }
+
+/* Focus */
+:focus-visible { outline: 2px solid var(--gv-gold); outline-offset: 2px; }
+
+/* Scrollbar - subtle */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--gv-bg-surface); }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gv-gold); }
+
+
+/* --------------------------------------------------------------------------
+   Premium SVG Icons - Gold line-art style
+   -------------------------------------------------------------------------- */
+.card svg, section svg {
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+
+.card:hover svg {
+  opacity: 1;
+}
+
+/* Icon container for consistent sizing */
+.icon-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+}
+
+/* Circular icon badge (like the step indicators in the reference) */
+.icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gv-gold);
+  color: var(--gv-gold);
+}
+
+.icon-circle svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Step connector line (like the horizontal gold line in the reference) */
+.step-connector {
+  position: relative;
+}
+
+.step-connector::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background-color: var(--gv-gold-border);
+  z-index: 0;
+}
+
+.step-connector .icon-circle {
+  position: relative;
+  z-index: 1;
+  background-color: var(--gv-bg-primary);
+}
+
+
+/* --------------------------------------------------------------------------
+   Top Utility Bar - Login/Register separated from main nav
+   -------------------------------------------------------------------------- */
+.topbar {
+  background-color: var(--gv-bg-surface);
+  border-bottom: 1px solid var(--gv-border);
+  font-size: 0.82rem;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+/* Hide topbar when page is scrolled */
+body.scrolled .topbar {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.topbar-link {
+  color: var(--gv-text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
+}
+
+.topbar-link:hover {
+  color: var(--gv-gold);
+}
+
+.topbar-link--register {
+  background-color: var(--gv-gold);
+  color: var(--gv-text-on-gold);
+  padding: 0.3rem 1rem;
+  border-radius: var(--gv-radius);
+  font-weight: 600;
+}
+
+.topbar-link--register:hover {
+  background-color: var(--gv-gold-light);
+  color: var(--gv-text-on-gold);
+}
+
+
+/* --------------------------------------------------------------------------
+   Hero Section - Image underlay with netting overlay
+   -------------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #111;
+  background-image: url('/assets/img/Home_hero.jpg');
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Visible netting pattern over the image */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba(255, 255, 255, 0.08) 39px,
+      rgba(255, 255, 255, 0.08) 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 39px,
+      rgba(255, 255, 255, 0.08) 39px,
+      rgba(255, 255, 255, 0.08) 40px
+    );
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 6rem 0;
+}
+
+.hero-subtitle {
+  color: var(--gv-gold);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.hero-title {
+  color: #ffffff !important;
+  font-size: 3.5rem;
+  font-weight: 300;
+  line-height: 1.15;
+  max-width: 550px;
+  letter-spacing: -0.02em;
+}
+
+/* Typewriter animation */
+.typewriter {
+  display: inline;
+  border-right: 2px solid var(--gv-gold);
+  animation: blinkCaret 0.75s step-end infinite;
+}
+
+@keyframes blinkCaret {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--gv-gold); }
+}
+
+@media (max-width: 767.98px) {
+  .hero { min-height: 60vh; }
+  .hero-title { font-size: 2.2rem; }
+  .hero-content { padding: 4rem 0; }
+}
+
+/* Animated scroll-down arrow */
+.hero-scroll-arrow {
+  position: absolute;
+  bottom: 2rem;
+  right: 3rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  animation: bounceDown 2s ease-in-out infinite;
+  text-decoration: none;
+}
+
+.hero-scroll-arrow svg {
+  transition: stroke 0.2s;
+}
+
+.hero-scroll-arrow:hover svg {
+  stroke: rgba(255, 255, 255, 0.9);
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+
+/* --------------------------------------------------------------------------
+   Sticky Navbar - Solid white by default, transparent/glass on scroll
+   -------------------------------------------------------------------------- */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background-color: var(--gv-bg-primary);
+  border-bottom: 1px solid var(--gv-border);
+  transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+.sticky-nav.scrolled {
+  background-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  border-bottom: none;
+}
+
+
+/* Netting overlay on sticky navbar - disabled */
+.sticky-nav::after {
+  display: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   Animations - Fade in on load and scroll
+   -------------------------------------------------------------------------- */
+
+/* Fade in up - for hero content */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in - general */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Subtle zoom on hero background */
+@keyframes slowZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+/* Hero animations */
+.hero {
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+  animation: slowZoom 20s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+.hero-subtitle {
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.hero-title {
+  animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+
+/* Cards - fade in on scroll */
+.card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.25s; }
+.card:nth-child(3) { animation-delay: 0.4s; }
+
+/* Section headings */
+section h2 {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out 0.1s forwards;
+}
+
+/* Smooth hover lift on cards */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* Button hover animation */
+.btn-gold, .btn-primary {
+  transition: all 0.2s ease, transform 0.2s ease;
+}
+
+.btn-gold:hover, .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(160, 140, 74, 0.3);
+}
+
+/* Nav links - underline slide in (for non-pill navbars) */
+.navbar:not(.sticky-nav) .nav-link {
+  position: relative;
+}
+
+.navbar:not(.sticky-nav) .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 1.5px;
+  background-color: var(--gv-gold);
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.navbar:not(.sticky-nav) .nav-link:hover::after,
+.navbar:not(.sticky-nav) .nav-link.active::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Topbar link hover */
+.topbar-link {
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.topbar-link:hover {
+  transform: translateY(-1px);
+}
+
+/* Table row hover highlight */
+.table-hover tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+/* SVG icon hover pulse */
+.card:hover svg {
+  animation: iconPulse 0.4s ease;
+}
+
+@keyframes iconPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* --------------------------------------------------------------------------
+   Image Placeholders - Clean, minimal style
+   -------------------------------------------------------------------------- */
+.img-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background-color: #f0f0f0;
+  border: 1px dashed var(--gv-gold-border);
+  border-radius: var(--gv-radius-lg);
+  width: 100%;
+  min-height: 240px;
+}
+
+.img-placeholder span {
+  color: var(--gv-text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.img-placeholder svg {
+  opacity: 0.5;
+}

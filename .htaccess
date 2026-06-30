@@ -1,0 +1,127 @@
+# =============================================================================
+# Aurum Vault Logistics Platform - Root Security Configuration
+# =============================================================================
+
+# Enable Rewrite Engine
+RewriteEngine On
+
+# =============================================================================
+# HTTPS Enforcement (Requirement 16.5)
+# Redirect all HTTP requests to HTTPS
+# =============================================================================
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# =============================================================================
+# Security Headers (Requirement 16.7)
+# =============================================================================
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# =============================================================================
+# Directory Listing Prevention
+# =============================================================================
+Options -Indexes
+
+# =============================================================================
+# Block Direct Access to /includes/ Directory
+# These files should only be included by PHP, never accessed directly via web
+# =============================================================================
+RewriteRule ^includes/ - [F,L]
+RewriteRule ^includes$ - [F,L]
+
+# =============================================================================
+# Block Direct Access to /uploads/ Directory (PHP Execution)
+# Allow serving of static files (images, PDFs) but block PHP execution
+# =============================================================================
+RewriteRule ^uploads/.*\.php$ - [F,L]
+RewriteRule ^uploads/.*\.phtml$ - [F,L]
+RewriteRule ^uploads/.*\.php[0-9]$ - [F,L]
+
+# =============================================================================
+# Block Access to Sensitive Files at Root Level
+# =============================================================================
+
+# Block .env files
+<FilesMatch "^\.env">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block .git directory and files
+<FilesMatch "^\.git">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block .htaccess itself
+<FilesMatch "^\.htaccess">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block composer files
+<FilesMatch "^composer\.(json|lock)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block phpunit.xml
+<FilesMatch "^phpunit\.xml$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block database schema files
+<FilesMatch "\.(sql|log|bak|swp)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# =============================================================================
+# Block Access to /database/ Directory
+# =============================================================================
+RewriteRule ^database/ - [F,L]
+
+# =============================================================================
+# Block Access to /tests/ Directory
+# =============================================================================
+RewriteRule ^tests/ - [F,L]
+
+# =============================================================================
+# Block Access to /vendor/ Directory (except autoload)
+# =============================================================================
+RewriteRule ^vendor/ - [F,L]

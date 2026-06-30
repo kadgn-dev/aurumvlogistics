@@ -1,0 +1,142 @@
+# =============================================================================
+# Aurum Vault Logistics Platform - Public HTML Security Configuration
+# =============================================================================
+
+# Enable Rewrite Engine
+RewriteEngine On
+
+# =============================================================================
+# HTTPS Enforcement (Requirement 16.5)
+# Redirect all HTTP requests to HTTPS
+# =============================================================================
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# =============================================================================
+# Security Headers (Requirement 16.7)
+# =============================================================================
+<IfModule mod_headers.c>
+    # Prevent MIME-type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Prevent clickjacking by allowing framing only from same origin
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Control referrer information sent with requests
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Additional security headers
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+</IfModule>
+
+# =============================================================================
+# Directory Listing Prevention
+# =============================================================================
+Options -Indexes
+
+# =============================================================================
+# Block Access to Sensitive Files
+# =============================================================================
+
+# Block access to .env files
+<FilesMatch "^\.env">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block access to .git directory and files
+<FilesMatch "^\.git">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block access to .htaccess itself
+<FilesMatch "^\.htaccess">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block access to composer files
+<FilesMatch "^composer\.(json|lock)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block access to phpunit.xml
+<FilesMatch "^phpunit\.xml$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block access to log files
+<FilesMatch "\.(log|sql|bak|swp)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# =============================================================================
+# Block Access to /includes/ Directory from Web
+# (Safety net in case includes/ is accidentally placed inside public_html/)
+# =============================================================================
+RewriteRule ^includes/ - [F,L]
+
+# =============================================================================
+# Block Access to /vendor/ Directory from Web
+# (Safety net in case vendor/ is accidentally placed inside public_html/)
+# =============================================================================
+RewriteRule ^vendor/ - [F,L]
+
+# =============================================================================
+# Block Access to /database/ Directory from Web
+# =============================================================================
+RewriteRule ^database/ - [F,L]
+
+# =============================================================================
+# Block PHP Execution in /uploads/ Directory
+# Prevents execution of uploaded PHP files (security measure)
+# =============================================================================
+RewriteRule ^uploads/.*\.php$ - [F,L]
+
+# =============================================================================
+# Default Character Set
+# =============================================================================
+AddDefaultCharset UTF-8
+
+# =============================================================================
+# PHP Settings (if allowed by hosting)
+# =============================================================================
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag expose_php Off
+</IfModule>
