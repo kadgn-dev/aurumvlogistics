@@ -14,12 +14,14 @@ deployment:
     - /bin/cp -f client/*.php $DEPLOYPATH/public_html/client/
     - /bin/mkdir -p $DEPLOYPATH/public_html/client/api
     - /bin/cp -f client/api/*.php $DEPLOYPATH/public_html/client/api/ 2>/dev/null; true
-    # Copy includes (above public_html)
+    # Copy includes (above public_html) — skip config.php to protect credentials
     - /bin/mkdir -p $DEPLOYPATH/includes/repositories
     - /bin/mkdir -p $DEPLOYPATH/includes/services
     - /bin/mkdir -p $DEPLOYPATH/includes/validators
     - /bin/mkdir -p $DEPLOYPATH/includes/templates/email
-    - find includes -maxdepth 1 -name "*.php" ! -name "config.php" ! -name "config.local.php" -exec /bin/cp -f {} $DEPLOYPATH/includes/ \;
+    - /bin/cp -f $DEPLOYPATH/includes/config.php /tmp/avl_config_backup.php 2>/dev/null; true
+    - /bin/cp -f includes/*.php $DEPLOYPATH/includes/
+    - /bin/cp -f /tmp/avl_config_backup.php $DEPLOYPATH/includes/config.php 2>/dev/null; true
     - /bin/cp -f includes/repositories/*.php $DEPLOYPATH/includes/repositories/
     - /bin/cp -f includes/services/*.php $DEPLOYPATH/includes/services/
     - /bin/cp -f includes/validators/*.php $DEPLOYPATH/includes/validators/
