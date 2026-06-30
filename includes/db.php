@@ -5,9 +5,11 @@
  * Database Connection - PDO Singleton
  */
 
-// Load local config if it exists (for SQLite dev mode), otherwise use standard config
+// Load config: local (SQLite dev) > production (server credentials) > default
 if (file_exists(__DIR__ . '/config.local.php')) {
   require_once __DIR__ . '/config.local.php';
+} elseif (file_exists(__DIR__ . '/config.production.php')) {
+  require_once __DIR__ . '/config.production.php';
 } else {
   require_once __DIR__ . '/config.php';
 }

@@ -14,14 +14,12 @@ deployment:
     - /bin/cp -f client/*.php $DEPLOYPATH/public_html/client/
     - /bin/mkdir -p $DEPLOYPATH/public_html/client/api
     - /bin/cp -f client/api/*.php $DEPLOYPATH/public_html/client/api/ 2>/dev/null; true
-    # Copy includes (above public_html) — skip config.php to protect credentials
+    # Copy includes (above public_html)
     - /bin/mkdir -p $DEPLOYPATH/includes/repositories
     - /bin/mkdir -p $DEPLOYPATH/includes/services
     - /bin/mkdir -p $DEPLOYPATH/includes/validators
     - /bin/mkdir -p $DEPLOYPATH/includes/templates/email
-    - /bin/cp -f $DEPLOYPATH/includes/config.php /tmp/avl_config_backup.php 2>/dev/null; true
     - /bin/cp -f includes/*.php $DEPLOYPATH/includes/
-    - /bin/cp -f /tmp/avl_config_backup.php $DEPLOYPATH/includes/config.php 2>/dev/null; true
     - /bin/cp -f includes/repositories/*.php $DEPLOYPATH/includes/repositories/
     - /bin/cp -f includes/services/*.php $DEPLOYPATH/includes/services/
     - /bin/cp -f includes/validators/*.php $DEPLOYPATH/includes/validators/
@@ -35,4 +33,4 @@ deployment:
     - find $DEPLOYPATH/public_html/admin -name "*.php" -exec sed -i "s|__DIR__ . '/../includes/|__DIR__ . '/../../includes/|g" {} \;
     - find $DEPLOYPATH/public_html/client -name "*.php" -exec sed -i "s|__DIR__ . '/../includes/|__DIR__ . '/../../includes/|g" {} \;
     - find $DEPLOYPATH/public_html/admin -name "*.php" -exec sed -i "s|__DIR__ . '/../vendor/|__DIR__ . '/../../vendor/|g" {} \;
-    - find $DEPLOYPATH/public_html/client -name "*.php" -exec sed -i "s|__DIR__ . '/../includes/|__DIR__ . '/../../includes/|g" {} \;
+    - find $DEPLOYPATH/public_html/client -name "*.php" -exec sed -i "s|__DIR__ . '/../vendor/|__DIR__ . '/../../vendor/|g" {} \;

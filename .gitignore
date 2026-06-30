@@ -4,6 +4,7 @@
 # Local development
 /database/local.sqlite
 /includes/config.local.php
+/includes/config.production.php
 
 # Deployment output
 /deploy/
