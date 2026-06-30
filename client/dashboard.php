@@ -106,7 +106,7 @@ require_once __DIR__ . '/../includes/templates/nav_client.php';
       <div class="card h-100">
         <div class="card-body text-center p-4">
           <h2 class="h6 text-secondary mb-2">Portfolio Value</h2>
-          <p class="display-6 fw-bold mb-0" style="color: #c9a227;">
+          <p class="h3 fw-bold mb-0" style="color: #c9a227;">
             <?= sanitizeOutput(formatCurrency($portfolioSummary['total_value'])) ?>
           </p>
           <small class="text-secondary">USD</small>
@@ -117,7 +117,7 @@ require_once __DIR__ . '/../includes/templates/nav_client.php';
       <div class="card h-100">
         <div class="card-body text-center p-4">
           <h2 class="h6 text-secondary mb-2">Total Gold Weight</h2>
-          <p class="display-6 fw-bold mb-0" style="color: #c9a227;">
+          <p class="h3 fw-bold mb-0" style="color: #c9a227;">
             <?= sanitizeOutput(number_format($portfolioSummary['total_weight'], 3)) ?>
           </p>
           <small class="text-secondary">troy oz</small>
@@ -128,7 +128,7 @@ require_once __DIR__ . '/../includes/templates/nav_client.php';
       <div class="card h-100">
         <div class="card-body text-center p-4">
           <h2 class="h6 text-secondary mb-2">Insured Value</h2>
-          <p class="display-6 fw-bold mb-0" style="color: #c9a227;">
+          <p class="h3 fw-bold mb-0" style="color: #c9a227;">
             <?= sanitizeOutput(formatCurrency($portfolioSummary['total_insured_value'])) ?>
           </p>
           <small class="text-secondary">USD</small>
@@ -139,7 +139,7 @@ require_once __DIR__ . '/../includes/templates/nav_client.php';
       <div class="card h-100">
         <div class="card-body text-center p-4">
           <h2 class="h6 text-secondary mb-2">Vault Locations</h2>
-          <p class="display-6 fw-bold mb-0" style="color: #c9a227;">
+          <p class="h3 fw-bold mb-0" style="color: #c9a227;">
             <?= sanitizeOutput((string) $portfolioSummary['vault_locations']) ?>
           </p>
           <small class="text-secondary"><?= $portfolioSummary['item_count'] ?> items</small>
