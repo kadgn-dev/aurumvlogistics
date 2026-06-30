@@ -96,6 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       'user_id' => (int) ($_POST['user_id'] ?? 0),
       'amount' => $_POST['amount'] ?? '',
       'description' => trim($_POST['description'] ?? ''),
+      'billing_period_start' => trim($_POST['billing_period_start'] ?? ''),
+      'billing_period_end' => trim($_POST['billing_period_end'] ?? ''),
     ];
 
     $result = $invoiceService->createInvoice($data);
@@ -281,6 +283,14 @@ require_once __DIR__ . '/../includes/templates/nav_admin.php';
             <?php endif; ?>
             <div class="form-text"><a href="/admin/invoice-descriptions.php" class="text-secondary">Manage presets</a></div>
           </div>
+          <div class="col-md-3">
+            <label for="billing_period_start" class="form-label text-secondary">Billing Period Start</label>
+            <input type="date" class="form-control" id="billing_period_start" name="billing_period_start">
+          </div>
+          <div class="col-md-3">
+            <label for="billing_period_end" class="form-label text-secondary">Billing Period End</label>
+            <input type="date" class="form-control" id="billing_period_end" name="billing_period_end">
+          </div>
           <div class="col-12">
             <button type="submit" class="btn btn-outline-light">Create Invoice</button>
           </div>
@@ -377,6 +387,7 @@ require_once __DIR__ . '/../includes/templates/nav_admin.php';
               <th scope="col">Invoice #</th>
               <th scope="col">Client</th>
               <th scope="col">Amount</th>
+              <th scope="col">Billing Period</th>
               <th scope="col">Status</th>
               <th scope="col">Created</th>
               <th scope="col">Payment Date</th>
@@ -387,11 +398,18 @@ require_once __DIR__ . '/../includes/templates/nav_admin.php';
             <?php foreach ($invoices as $invoice): ?>
             <?php
             $clientName = $userNames[(int) $invoice['user_id']] ?? 'Unknown';
+            $billingPeriod = '—';
+            if (!empty($invoice['billing_period_start']) && !empty($invoice['billing_period_end'])) {
+              $billingPeriod = formatDate($invoice['billing_period_start']) . ' – ' . formatDate($invoice['billing_period_end']);
+            } elseif (!empty($invoice['billing_period_start'])) {
+              $billingPeriod = formatDate($invoice['billing_period_start']) . ' – present';
+            }
             ?>
             <tr>
               <td><?= sanitizeOutput($invoice['invoice_number']) ?></td>
               <td><?= sanitizeOutput($clientName) ?></td>
               <td><?= sanitizeOutput(formatCurrency((float) $invoice['amount'])) ?></td>
+              <td><?= sanitizeOutput($billingPeriod) ?></td>
               <td>
                 <?php if ($invoice['status'] === 'paid'): ?>
                 <span class="badge bg-success">Paid</span>

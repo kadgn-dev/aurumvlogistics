@@ -95,6 +95,7 @@ require_once __DIR__ . '/../includes/templates/nav_client.php';
           <tr class="border-secondary">
             <th scope="col">Invoice Number</th>
             <th scope="col">Amount</th>
+            <th scope="col">Billing Period</th>
             <th scope="col">Status</th>
             <th scope="col">Created Date</th>
             <th scope="col">Actions</th>
@@ -102,9 +103,18 @@ require_once __DIR__ . '/../includes/templates/nav_client.php';
         </thead>
         <tbody>
           <?php foreach ($invoices as $invoice): ?>
+          <?php
+          $billingPeriod = '—';
+          if (!empty($invoice['billing_period_start']) && !empty($invoice['billing_period_end'])) {
+            $billingPeriod = formatDate($invoice['billing_period_start']) . ' – ' . formatDate($invoice['billing_period_end']);
+          } elseif (!empty($invoice['billing_period_start'])) {
+            $billingPeriod = formatDate($invoice['billing_period_start']) . ' – present';
+          }
+          ?>
           <tr class="border-secondary">
             <td><?= sanitizeOutput($invoice['invoice_number']) ?></td>
             <td><?= sanitizeOutput(formatCurrency((float) $invoice['amount'])) ?></td>
+            <td><?= sanitizeOutput($billingPeriod) ?></td>
             <td>
               <?php if ($invoice['status'] === 'paid'): ?>
                 <span class="badge bg-success">Paid</span>

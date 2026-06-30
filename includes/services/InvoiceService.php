@@ -82,6 +82,8 @@ class InvoiceService
       'user_id' => $userId,
       'amount' => $data['amount'],
       'description' => trim($data['description']),
+      'billing_period_start' => $data['billing_period_start'] ?? null,
+      'billing_period_end' => $data['billing_period_end'] ?? null,
     ]);
 
     // Retrieve the created invoice to return full details

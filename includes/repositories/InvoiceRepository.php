@@ -32,7 +32,7 @@ class InvoiceRepository
   public function findById(int $id): ?array
   {
     $stmt = $this->pdo->prepare(
-      'SELECT id, user_id, invoice_number, amount, description, status, payment_date, created_at
+      'SELECT id, user_id, invoice_number, amount, description, billing_period_start, billing_period_end, status, payment_date, created_at
        FROM invoices
        WHERE id = :id'
     );
@@ -64,7 +64,7 @@ class InvoiceRepository
 
     // Get paginated data
     $stmt = $this->pdo->prepare(
-      'SELECT id, user_id, invoice_number, amount, description, status, payment_date, created_at
+      'SELECT id, user_id, invoice_number, amount, description, billing_period_start, billing_period_end, status, payment_date, created_at
        FROM invoices
        WHERE user_id = :user_id
        ORDER BY created_at DESC
@@ -94,14 +94,16 @@ class InvoiceRepository
     $invoiceNumber = $this->generateInvoiceNumber();
 
     $stmt = $this->pdo->prepare(
-      'INSERT INTO invoices (user_id, invoice_number, amount, description, status, created_at)
-       VALUES (:user_id, :invoice_number, :amount, :description, :status, :created_at)'
+      'INSERT INTO invoices (user_id, invoice_number, amount, description, billing_period_start, billing_period_end, status, created_at)
+       VALUES (:user_id, :invoice_number, :amount, :description, :billing_period_start, :billing_period_end, :status, :created_at)'
     );
     $stmt->execute([
       ':user_id' => $data['user_id'],
       ':invoice_number' => $invoiceNumber,
       ':amount' => $data['amount'],
       ':description' => $data['description'],
+      ':billing_period_start' => !empty($data['billing_period_start']) ? $data['billing_period_start'] : null,
+      ':billing_period_end' => !empty($data['billing_period_end']) ? $data['billing_period_end'] : null,
       ':status' => 'unpaid',
       ':created_at' => date('Y-m-d H:i:s'),
     ]);
@@ -204,7 +206,7 @@ class InvoiceRepository
 
     // Get paginated data
     $stmt = $this->pdo->prepare(
-      'SELECT id, user_id, invoice_number, amount, description, status, payment_date, created_at
+      'SELECT id, user_id, invoice_number, amount, description, billing_period_start, billing_period_end, status, payment_date, created_at
        FROM invoices
        ORDER BY created_at DESC
        LIMIT :limit OFFSET :offset'

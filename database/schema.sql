@@ -124,6 +124,8 @@ CREATE TABLE IF NOT EXISTS invoices (
     invoice_number VARCHAR(20) NOT NULL UNIQUE,
     amount DECIMAL(12,2) NOT NULL,
     description TEXT NOT NULL,
+    billing_period_start DATE DEFAULT NULL,
+    billing_period_end DATE DEFAULT NULL,
     status ENUM('unpaid', 'paid') NOT NULL DEFAULT 'unpaid',
     payment_date DATETIME DEFAULT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
